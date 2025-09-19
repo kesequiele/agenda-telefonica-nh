@@ -131,10 +131,10 @@
       $tbody.innerHTML="";
       for(const r of rows){
         $tbody.innerHTML+=`<tr class="border-b">
-          <td><input data-id="\${r.id}" data-f="nome" value="\${r.nome}" class="border rounded p-1 w-full"></td>
-          <td><input data-id="\${r.id}" data-f="grupo" value="\${r.grupo||""}" class="border rounded p-1 w-full"></td>
-          <td><input data-id="\${r.id}" data-f="setor" value="\${r.setor||""}" class="border rounded p-1 w-full"></td>
-          <td><input data-id="\${r.id}" data-f="telefone" value="\${r.telefone}" class="border rounded p-1 w-full"></td>
+          <td><input data-id="\${r.id}" data-f="nome" value="${r.nome}" class="border rounded p-1 w-full"></td>
+          <td><input data-id="\${r.id}" data-f="grupo" value="${r.grupo||""}" class="border rounded p-1 w-full"></td>
+          <td><input data-id="\${r.id}" data-f="setor" value="${r.setor||""}" class="border rounded p-1 w-full"></td>
+          <td><input data-id="\${r.id}" data-f="telefone" value="${r.telefone}" class="border rounded p-1 w-full"></td>
           <td>
             <button onclick="saveRow('\${r.id}')" class="btn-teal px-2 py-1 rounded mr-2">Salvar</button>
             <button onclick="delRow('\${r.id}')" class="btn-red px-2 py-1 rounded">Excluir</button>
