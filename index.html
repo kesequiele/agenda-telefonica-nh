@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agenda Telefônica — Nutrihouse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.1/dist/umd/supabase.js"></script>
+  <style>
+    :root {
+      --brand-teal:#6BAFB7;
+      --brand-yellow:#E6AE4A;
+      --brand-red:#B84C4C;
+    }
+    .btn-teal {background-color:var(--brand-teal);color:#fff}
+    .btn-yellow{background-color:var(--brand-yellow);color:#fff}
+    .btn-red{background-color:var(--brand-red);color:#fff}
+  </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50 text-gray-800">
+
+  <!-- HEADER -->
+  <header class="bg-white shadow">
+    <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-[#6BAFB7]" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h13a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6zm0 2h12v14H6V4zm2 2v2h8V6H8zm0 4v2h5v-2H8z"/>
+        </svg>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900">
+          Agenda Telefônica <span class="text-gray-400">|</span> <span class="text-[#B84C4C]">Nutrihouse</span>
+        </h1>
+      </div>
+      <img src="Logo-NutriHouse.png" alt="Logo NutriHouse" class="h-12 md:h-14" />
+    </div>
+    <div class="h-1 bg-gradient-to-r from-[var(--brand-teal)] via-[var(--brand-yellow)] to-[var(--brand-red)]"></div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="flex-1 container mx-auto px-4 py-6">
+    <section class="bg-white rounded-2xl p-4 md:p-6 shadow mb-6">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Buscar</label>
+      <input id="q" type="search" placeholder="Digite para filtrar..." class="w-full rounded-xl border px-3 py-2">
+    </section>
+
+    <section class="bg-white rounded-2xl p-2 md:p-4 shadow">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm" id="tabela">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-3 text-left">Nome</th>
+              <th class="px-4 py-3 text-left">Grupo</th>
+              <th class="px-4 py-3 text-left">Setor</th>
+              <th class="px-4 py-3 text-left">Telefone</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER FIXO NO FINAL -->
+  <footer class="mt-10">
+    <div class="w-full h-44 md:h-60 bg-no-repeat bg-bottom bg-cover"
+         style="background-image:url('data:image/png;base64,SEU_BASE64_DO_RODAPE_AQUI')">
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const SUPABASE_URL = "https://dekrnfinozarmqyqbvve.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOi..."; // sua anon key
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const $q=document.getElementById("q"),$tbody=document.getElementById("tbody");
+    let state={data:[],q:""};
+
+    async function load(){ 
+      const {data,error} = await client.from("contatos").select("id,nome,grupo,setor,telefone").order("nome");
+      if(error){ console.error(error); return; }
+      state.data=data||[]; render();
+    }
+    function render(){ 
+      const rows = state.data.filter(r=>(r.nome+r.telefone+r.grupo+r.setor).toLowerCase().includes(state.q));
+      $tbody.innerHTML="";
+      for(const r of rows){
+        $tbody.innerHTML+=`<tr class="border-b">
+          <td class="px-4 py-2">${r.nome}</td>
+          <td class="px-4 py-2">${r.grupo||"-"}</td>
+          <td class="px-4 py-2">${r.setor||"-"}</td>
+          <td class="px-4 py-2"><a href="tel:${r.telefone}">${r.telefone}</a></td>
+        </tr>`;
+      }
+    }
+    $q.addEventListener("input",()=>{state.q=$q.value.toLowerCase();render();});
+    load();
+  </script>
+</body>
+</html>
