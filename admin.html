@@ -131,22 +131,22 @@
       $tbody.innerHTML="";
       for(const r of rows){
         $tbody.innerHTML+=`<tr class="border-b">
-          <td><input data-id="\${r.id}" data-f="nome" value="${r.nome}" class="border rounded p-1 w-full"></td>
-          <td><input data-id="\${r.id}" data-f="grupo" value="${r.grupo||""}" class="border rounded p-1 w-full"></td>
-          <td><input data-id="\${r.id}" data-f="setor" value="${r.setor||""}" class="border rounded p-1 w-full"></td>
-          <td><input data-id="\${r.id}" data-f="telefone" value="${r.telefone}" class="border rounded p-1 w-full"></td>
+          <td><input data-id="${r.id}" data-f="nome" value="${r.nome}" class="border rounded p-1 w-full"></td>
+          <td><input data-id="${r.id}" data-f="grupo" value="${r.grupo||""}" class="border rounded p-1 w-full"></td>
+          <td><input data-id="${r.id}" data-f="setor" value="${r.setor||""}" class="border rounded p-1 w-full"></td>
+          <td><input data-id="${r.id}" data-f="telefone" value="${r.telefone}" class="border rounded p-1 w-full"></td>
           <td>
-            <button onclick="saveRow('\${r.id}')" class="btn-teal px-2 py-1 rounded mr-2">Salvar</button>
-            <button onclick="delRow('\${r.id}')" class="btn-red px-2 py-1 rounded">Excluir</button>
+            <button onclick="saveRow('${r.id}')" class="btn-teal px-2 py-1 rounded mr-2">Salvar</button>
+            <button onclick="delRow('${r.id}')" class="btn-red px-2 py-1 rounded">Excluir</button>
           </td>
         </tr>`;
       }
     }
     window.saveRow=async(id)=>{
-      const nome=document.querySelector(`input[data-id="\${id}"][data-f=nome]`).value;
-      const grupo=document.querySelector(`input[data-id="\${id}"][data-f=grupo]`).value;
-      const setor=document.querySelector(`input[data-id="\${id}"][data-f=setor]`).value;
-      const telefone=document.querySelector(`input[data-id="\${id}"][data-f=telefone]`).value;
+      const nome=document.querySelector(`input[data-id="${id}"][data-f=nome]`).value;
+      const grupo=document.querySelector(`input[data-id="${id}"][data-f=grupo]`).value;
+      const setor=document.querySelector(`input[data-id="${id}"][data-f=setor]`).value;
+      const telefone=document.querySelector(`input[data-id="${id}"][data-f=telefone]`).value;
       const {error}=await client.from("contatos").update({nome,grupo,setor,telefone}).eq("id",id);
       if(error) alert("Erro: "+error.message); else loadRows();
     }
